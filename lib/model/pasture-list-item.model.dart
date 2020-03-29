@@ -1,19 +1,19 @@
 class PastureListItemModel {
-  String sIdPasture;
+  String idPasture;
   String pastureName;
   String tagPasture;
   String tagPastureActionActua;
   String grassName;
 
   PastureListItemModel(
-      {this.sIdPasture,
+      {this.idPasture,
       this.pastureName,
       this.tagPasture,
       this.tagPastureActionActua,
       this.grassName});
 
   PastureListItemModel.fromJson(Map<String, dynamic> json) {
-    sIdPasture = json['_idPasture'];
+    idPasture = json['idPasture'];
     pastureName = json['pastureName'];
     tagPasture = json['tagPasture'];
     tagPastureActionActua = json['tagPastureActionActua'];
@@ -22,7 +22,7 @@ class PastureListItemModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_idPasture'] = this.sIdPasture;
+    data['idPasture'] = this.idPasture;
     data['pastureName'] = this.pastureName;
     data['tagPasture'] = this.tagPasture;
     data['tagPastureActionActua'] = this.tagPastureActionActua;
