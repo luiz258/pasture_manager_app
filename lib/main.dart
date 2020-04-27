@@ -1,70 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:pasture_manager/themes/app.themes.dart';
+import 'package:pasture_manager/views/pages/FancyFab.dart';
+import 'package:pasture_manager/views/pages/evaluation-page.dart';
+import 'package:pasture_manager/views/pages/list-evaluation-page.dart';
+import 'package:pasture_manager/views/pages/pasture-page.dart';
+
+import 'package:pasture_manager/views/widgets/pasture/pasture-list.widget.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  ScrollController scrollController;
+  bool dialVisible = true;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-       
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: appTheme(),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-    
-      _counter++;
-    });
-  }
-
+class HomePage extends StatelessWidget {
+  ScrollController scrollController;
+  bool dialVisible = true;
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
-       
-        title: Text(widget.title),
-      ),
-      body: Center(
-        
-        child: Column(
-          
+        backgroundColor: backgroundColor,
+       title: Center( 
+         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+           children: <Widget>[
+           Image.asset('assets/leaf.png'),
+             Text(
+              'UCP', 
+              style: TextStyle( 
+                fontSize: 33 ,
+                fontStyle: FontStyle.italic ,
+                fontWeight: FontWeight.bold ,
+                color: Theme.of(context).primaryColor)
+                ),
+           ],
+           )
+          ),
+      ),
+      body: Container(
+        
+        child: PastureList(),
+        
+      ),
+      floatingActionButton: SpeedDial(
+          // both default to 16
+          marginRight: 18,
+          marginBottom: 20,
+          animatedIcon: AnimatedIcons.menu_close,
+          animatedIconTheme: IconThemeData(size: 28.0),
+          // this is ignored if animatedIcon is non null
+           child: Icon(Icons.add),
+          visible: dialVisible,
+          // If true user is forced to close dial manually 
+          // by tapping main button and overlay is not rendered.
+          closeManually: false,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+         
+          tooltip: 'Speed Dial',
+          heroTag: 'speed-dial-hero-tag',
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+         // elevation: 2.0,
+          shape: CircleBorder(),
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.add_comment),
+              backgroundColor: Colors.redAccent,
+              label: 'Fazer nova avaliação',
+              labelStyle: TextStyle(fontSize: 20.0),
+              onTap: () {
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EvaluationPage()),
+                );
+               }
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            SpeedDialChild(
+              child: Icon(Icons.add),
+              backgroundColor: Colors.blue,
+              label: 'Adcionar novo pasto',
+              labelStyle: TextStyle(fontSize: 20.0),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PasturePage()),
+                );
+              },
             ),
+            
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
