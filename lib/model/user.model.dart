@@ -1,44 +1,27 @@
 class UserModel {
+  String roleId;
   String id;
-  String name;
-  String email;
-  String image;
-  String username;
-  String password;
-  String role;
+  String farmId;
   String token;
+  String name;
 
-  UserModel(
-      {this.id,
-      this.name,
-      this.email,
-      this.image,
-      this.username,
-      this.password,
-      this.role,
-      this.token});
+  UserModel({this.roleId, this.id, this.farmId, this.token, this.name});
 
   UserModel.fromJson(Map<String, dynamic> json) {
+    roleId = json['roleId'];
     id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    image = json['image'];
-    username = json['username'];
-    password = json['password'];
-    role = json['role'];
+    farmId = json['farmId'];
     token = json['token'];
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['roleId'] = this.roleId;
     data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['image'] = this.image;
-    data['username'] = this.username;
-    data['password'] = this.password;
-    data['role'] = this.role;
+    data['farmId'] = this.farmId;
     data['token'] = this.token;
+    data['name'] = this.name;
     return data;
   }
 }

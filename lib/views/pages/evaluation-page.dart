@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pasture_manager/db/DatabasePM.dart';
+import 'package:pasture_manager/model/evaluation.model.dart';
+import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:uuid/uuid.dart';
 
 
 class EvaluationPage extends StatefulWidget {
@@ -15,150 +19,32 @@ class EvaluationPage extends StatefulWidget {
 class _EvaluationPageState extends State<EvaluationPage> {
   final _formKey = GlobalKey<FormState>(); //~Formulario
   final _dataFormat = new DateFormat('dd/MM/yyyy');
+  var uuid = Uuid();
+  var  _evaluationForm = EvaluationModel();
 
   DateTime date = DateTime.now();
 
-  var controller = new MoneyMaskedTextController();
-  List<DropdownMenuItem<String>> _conditionItem;
-  String _condition;
-  List<DropdownMenuItem<String>> _pastoItem;
-  String _pasto;
-
+  var controller =new MaskedTextController(mask: '00.00');
+ 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: date,
       firstDate: DateTime(2018),
       lastDate: DateTime(2040),
+      
     );
     if(picked != null && picked != date){
       setState(() {
         date = picked;
+       
+        _evaluationForm.evaluationDate = picked;
+      
       });
     }
   }
-
-  List <DropdownMenuItem<String>> _getDropDonwContion(){
-     List <DropdownMenuItem<String>> items = new List();
-     items.add(new DropdownMenuItem(
-       value: 'xamarin',
-       child: Text("xamarim")
-     ));
-
-      items.add(new DropdownMenuItem(
-       value: 'xamarin2',
-       child: Text("xamarim2")
-     ));
-      items.add(new DropdownMenuItem(
-       value: 'xamari2n',
-       child: Text("xamari2m2")
-     ));
-
-     return items;
-  }
-
-
-
-List <DropdownMenuItem<String>> _getDropDonwPasto(){
-     List <DropdownMenuItem<String>> itens = new List();
-     itens.add(new DropdownMenuItem(
-       value: '1',
-       child: Text("Pasto 1")
-     ));
-  itens.add(new DropdownMenuItem(
-       value: '3231',
-       child: Text("Pasto 1")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '3531',
-       child: Text("Pasto 1")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '351',
-       child: Text("Pasto 1")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '321',
-       child: Text("Pasto 1")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '331',
-       child: Text("Pasto 1")
-     ));
-  itens.add(new DropdownMenuItem(
-       value: '41',
-       child: Text("Pasto 1")
-     ));
-  itens.add(new DropdownMenuItem(
-       value: '51',
-       child: Text("Pasto 1")
-     ));
-  itens.add(new DropdownMenuItem(
-       value: '51',
-       child: Text("Pasto 1")
-     ));
-
-      itens.add(new DropdownMenuItem(
-       value: '2',
-       child: Text("Pasto 2")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '3',
-       child: Text("Pasto 3")
-     ));
-       itens.add(new DropdownMenuItem(
-       value: '130',
-       child: Text("Pasto 3wwww")
-     ));
-      itens.add(new DropdownMenuItem(
-       value: '0113',
-       child: Text("Pasto 3wwww")
-     ));
- itens.add(new DropdownMenuItem(
-       value: '3465',
-       child: Text("Pasto 3wwww")
-     ));
- itens.add(new DropdownMenuItem(
-       value: '37',
-       child: Text("Pasto 3wwww")
-     )); itens.add(new DropdownMenuItem(
-       value: '386',
-       child: Text("Pasto 3wwww")
-     )); itens.add(new DropdownMenuItem(
-       value: '380',
-       child: Text("Pasto 3wwww")
-     )); itens.add(new DropdownMenuItem(
-       value: '38',
-       child: Text("Pasto 3wwww")
-     )); itens.add(new DropdownMenuItem(
-       value: '93',
-       child: Text("Pasto 3wwww")
-     ));
-     return itens;
-  }
-
-void changerDropDownPasto(String pastoItem){
-   setState((){
-    _pasto = pastoItem;
-  });
-} 
-
-void changerDropDownItem(String selectItem){
-  setState((){
-    _condition =selectItem;
-  });
-}
-
-
 @override
-void initState(){
-     
-      _conditionItem = _getDropDonwContion();
-      _condition = _conditionItem[0].value;
-
-      _pastoItem = _getDropDonwPasto();
-      _pasto = _pastoItem[0].value;
-  }
+void initState()=> _evaluationForm.evaluationDate = date;
 
   @override
   Widget build(BuildContext context) {
@@ -168,88 +54,158 @@ void initState(){
         iconTheme: IconThemeData(color: primaryColor),
         title: Text('Fazer Avaliação',  style: TextStyle(color: primaryColor, fontSize: 26),),
         ),
-      body: Container(
-        
-        margin: EdgeInsets.all(20),
-        child: Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-           
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                      Text("Selecione a ação atual do pasto"),
-                    new DropdownButton(
-                      items: _conditionItem,
-                      value: _condition,
-                      isExpanded: true,
-                      onChanged: changerDropDownItem,
-                ),
-                  ],
-                ),
-
-                Text("Selecione o Pasto  "),
-                 new DropdownButton(
-                
-                items: _pastoItem,
-                value: _pasto,
-                isExpanded: true,
-                onChanged: changerDropDownPasto,
-              ),
-              ],
-            ),
-            
-             
-            
-             TextFormField(
-                keyboardType: TextInputType.number,
-               controller: controller,
-                decoration: InputDecoration(
-                  labelText: 'Nota'
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.only(top: 30, bottom: 10),
-                
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Data da avalição'),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-
-                        IconButton(
-                            icon: Icon(Icons.date_range, size: 30,color: Theme.of(context).primaryColor,),
-                            tooltip: 'Alterar data',
-                            onPressed: () {
-                              _selectDate(context);
-                             
-                            },
-                        ),  
-                        Text(_dataFormat.format(date),
-                          style: TextStyle(
-                            fontSize: 30, 
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w600
-                          ),
+                         
+                       DropdownButtonFormField(
+                    hint:  Text("Selecione a ação atual do pasto"),
+                    value: _evaluationForm.tagPast,
+                    items: [
+                        DropdownMenuItem<String>(
+                          child: Text('Descanso'),
+                          value: '1',
                         ),
-
-                          
+                        DropdownMenuItem<String>(
+                          child: Text('Pastejo'),
+                          value: '2',
+                        ),
+                        DropdownMenuItem<String>(
+                          child: Text('Livre'),
+                          value: '3',
+                        ),
+                    ] ,
+                   validator: (value) => value == null ? 'Selecione a ação atual do pasto capim' : null,
+                     onChanged: (val) {
+                      setState(() {
+                        _evaluationForm.tagPast= val.toString() ;
+                      });
+                    },
+                
+                  ),
                       ],
                     ),
+                   
+                     StreamBuilder<List<Pasture>>(
+                        stream: DatabasePM.instance.pastureDAO.listPasture(),
+                        builder: (context, snapshot) {
+                        
+                          if(!snapshot.hasData) return Container();
+                          var list = snapshot.data;
+                          return DropdownButtonFormField(
+                            hint: Text("Selecione o Pasto  "),
+                            value: _evaluationForm.idPasture,
+                            items: list.map(
+                              (c)=> DropdownMenuItem(
+                                child: Text(c.id),
+                                value: c.id,
+                                )).toList(),
+                            validator: (value) => value == null ? 'Selecione o Pasto para avaliar.' : null,
+                            onChanged: (v) {
+                              setState(() {
+                                _evaluationForm.idPasture = v;
+                              });
+                            },
+                            );
+                        }
+                      ),
+
                   ],
                 ),
-              ),
+                
+                 
+                
+                 TextFormField(
+                    keyboardType: TextInputType.number,
+                   controller: controller,
+                    decoration: InputDecoration(
+                      labelText: 'Nota'
+                    ),
+                    validator: (value) => value == null ? 'O campo nota deve Ser preenchido' : null,
+                    onSaved: (value){
+                      setState(() {
+                        _evaluationForm.note = double.parse(value);
+                      });
+                    },
+                  ),
 
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: PMButton(text: "Salvar", callBack: () {},),
-            )
-          ],
+                  Container(
+                    margin: EdgeInsets.only(top: 30, bottom: 10),
+                    
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Data da avalição'),
+                        Row(
+                          children: <Widget>[
+
+                            IconButton(
+                                icon: Icon(Icons.date_range, size: 30,color: Theme.of(context).primaryColor,),
+                                tooltip: 'Alterar data',
+                                
+                                onPressed: () {
+                                  _selectDate(context);
+                                                                  
+                                },
+                                
+                                
+                            ),  
+                            Text(_dataFormat.format(date),
+                            
+                              style: TextStyle(
+                                fontSize: 30, 
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w600
+                              ),
+                              
+                            ),
+
+                              
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: PMButton(text: "Salvar", callBack: () {
+                     if(_formKey.currentState.validate()){
+                        _formKey.currentState.save();
+
+                         var eva = new Evaluation(
+                              id: uuid.v4().toString(),
+                              idPasture: _evaluationForm.idPasture,
+                              tagPast: _evaluationForm.tagPast,
+                              note: _evaluationForm.note,
+                              evaluationDate:_evaluationForm.evaluationDate,
+                              farmId: Settings.user.farmId,
+                              userId: Settings.user.id
+
+                            );
+
+
+                          DatabasePM.instance.evaluationDAO.addEvaluation(eva);
+                          Navigator.pop(context);
+                        }
+
+                  },),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

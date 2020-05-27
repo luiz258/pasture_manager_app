@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pasture_manager/views/components/Tags/grazin-Tag.dart';
+import 'package:pasture_manager/db/DatabasePM.dart';
+
 import 'package:pasture_manager/views/components/Tags/repose-Tag.dart';
 
-class PastureItem extends StatelessWidget {
+class PastureItem extends StatefulWidget {
+  final Pasture model;
+
+  PastureItem({@required this.model});
+
+  @override
+  _PastureItemState createState() => _PastureItemState();
+}
+
+class _PastureItemState extends State<PastureItem> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,28 +37,23 @@ class PastureItem extends StatelessWidget {
         ),
       ),
       child: Row(
-     
         children: <Widget>[
          Column(
              children: <Widget>[ 
                Container(
                  padding: EdgeInsets.only(left: 10),
-                 
                   width:190, 
-                  
                  //color: Theme.of(context).accentColor,
                 child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[  
-                    ReposeTag(),
-                     Text("Pasto 1", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),),
-                     Text("Capim: Nome do Capim", style: TextStyle(fontSize: 14),)
+                    ReposeTag(),//-TAG
+                     Text('${widget.model.pastureName}', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),),
+                     Text('${widget.model.area}', style: TextStyle(fontSize: 14),)
 
                    ],),
                 ),
-               
-               
                ],
           ),
 
@@ -76,7 +82,9 @@ class PastureItem extends StatelessWidget {
                 
                  
                ),
-                
+
+           
+                            
                ],
           ),
         ],
