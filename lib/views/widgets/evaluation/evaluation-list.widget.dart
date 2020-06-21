@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pasture_manager/bloc/evaluation.bloc.dart';
 import 'package:pasture_manager/db/DatabasePM.dart';
 import 'package:pasture_manager/db/dao/Evaluation/EvaluationDAO.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
@@ -15,6 +16,7 @@ class _EvaluationListState extends State<EvaluationList> {
   
   @override
   Widget build(BuildContext context) {
+    var bloc = EvaluationBloc();
     return Column(
       children: <Widget>[
         Container(
@@ -45,17 +47,6 @@ class _EvaluationListState extends State<EvaluationList> {
              
               ),
         ),
-
-        Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: PMButton(
-              text: 'Sincronizar', 
-              width: 250,
-              
-              callBack: (){
-
-              },),
-          )
 
       ],
     );

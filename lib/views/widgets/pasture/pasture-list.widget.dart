@@ -10,8 +10,6 @@ import 'package:pasture_manager/views/pages/pasture-page.dart';
 import 'package:pasture_manager/views/widgets/pasture/pasture-item.widget.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../settings.dart';
-
 class PastureList extends StatefulWidget {
   @override
   _PastureListState createState() => _PastureListState();
@@ -30,7 +28,7 @@ class _PastureListState extends State<PastureList> {
       body: Column(
         children: <Widget>[
           Container(
-            height: 610,
+            height: 670,
             //color: Theme.of(context).cardColor,
             //margin: EdgeInsets.all(10),
 
@@ -40,7 +38,7 @@ class _PastureListState extends State<PastureList> {
                 if (!snapshot.hasData) return Container();
 
                 List<Pasture> pasture = snapshot.data;
-   print('${Settings.user.farmId} ------------------');
+   //print('${Settings.user.farmId} ------------------');
                 return ListView.builder(
                   itemCount: pasture.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -53,23 +51,7 @@ class _PastureListState extends State<PastureList> {
               },
             ),
           ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: PMButton(
-                text: 'Sincronizar',
-                width: 250,
-                callBack: () {
-                 
-                  ///print(model);
-
-                  print(bloc.sincronozarPasto());
-                  //DatabasePM.instance.pastureDAO.updatePastureSyncData(element);
-                },
-              ),
-            ),
-          )
-        ],
+      ],
       ),
       floatingActionButton: SpeedDial(
         // both default to 16

@@ -82,10 +82,7 @@ void initState()=> _evaluationForm.evaluationDate = date;
                           child: Text('Pastejo'),
                           value: '2',
                         ),
-                        DropdownMenuItem<String>(
-                          child: Text('Livre'),
-                          value: '3',
-                        ),
+                       
                     ] ,
                    validator: (value) => value == null ? 'Selecione a ação atual do pasto capim' : null,
                      onChanged: (val) {

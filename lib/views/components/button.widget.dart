@@ -7,12 +7,14 @@ class PMButton extends StatelessWidget {
   final String image;
   final Function callBack;
   final double width;
+  final Color color;
 
   PMButton({
     @required this.text,
     @required this.callBack,
     this.image,
     this.width,
+    this.color
   });
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class PMButton extends StatelessWidget {
       height: 50,
       width: width != null ? width : 400,
       child: FlatButton(
-        color: Theme.of(context).primaryColor,
+        color: color != null ? color : Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(18.0),
          

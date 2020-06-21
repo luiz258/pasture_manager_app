@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:pasture_manager/bloc/account.bloc.dart';
 import 'package:pasture_manager/model/authenticate-user.model.dart';
-import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
-import 'package:pasture_manager/views/pages/pasture-page.dart';
 import 'package:pasture_manager/views/pages/signup-page.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../../home.dart';
 
@@ -16,17 +15,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
     var  _authForm = AuthenticateModel();
     final _scoffoldKey = GlobalKey<ScaffoldState>();
     final _formKey = GlobalKey<FormState>();
       var email = '';
       var password = '';
-
-
+   var bloc = new AccountBloc();
+   bool bisy= false;
+@override
+  void setState(fn) {
+    super.setState(fn);
+  }
  
   @override
   Widget build(BuildContext context) {
-    
+       var bloc = Provider.of<AccountBloc>(context, listen: false);
     return Scaffold(
       key: _scoffoldKey,
       body: Form(
@@ -134,23 +138,23 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         width: 300,
                         height: 35,
-                        child: RaisedButton(
+                        child: FlatButton(
                           color:  Theme.of(context).primaryColor,
                           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          child: Text('Entrar',
+                          child:   Text('Entrar',
                           style: TextStyle(
                             color: backgroundColor,
                             fontSize: 18       
                           ),
-                          ), 
+                          )  ,
                           onPressed: () {
-                            
+                            showLoadingDialog();
                             if(_formKey.currentState.validate()){
                               _formKey.currentState.save();
                               authenticate(context);
-                              
+                            
                             }
-                         
+                        
                           },
                         ),
                       ),
@@ -158,16 +162,18 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         width: 300,
                         height: 45,
-                        child: RaisedButton(
+                        child: FlatButton(
                           color:  backgroundColor,
+                          
                           shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          child: Text('Faça sua conta agora!',
+                          child:  Text('Faça sua conta agora!',
                             style: TextStyle(
                               //color: backgroundColor,
                               fontSize: 18       
                             ),
                           ), 
                           onPressed: () {
+                            
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => Signup()),
@@ -191,10 +197,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   authenticate(BuildContext context) async{
-
-     
-     var bloc = Provider.of<AccountBloc>(context, listen: false);
-
+    
+ 
      var user = await bloc.authenticate(
        AuthenticateModel(
         email: email,
@@ -203,14 +207,18 @@ class _LoginPageState extends State<LoginPage> {
     );
     
     if (user != null) { 
+   
     //print(user)
      Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomePage()),
+      
     );
+     hideLoadingDialog();
       return;
     }
 
+ hideLoadingDialog();
     final snackBar = SnackBar(content: Text('Usuário ou senha invalidos'));
     _scoffoldKey.currentState.showSnackBar(snackBar);
     
@@ -218,5 +226,7 @@ class _LoginPageState extends State<LoginPage> {
    
   }
 
+
+ 
 
 }

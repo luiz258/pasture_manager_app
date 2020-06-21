@@ -98,9 +98,9 @@ class Pasture extends DataClass implements Insertable<Pasture> {
       'farmId': serializer.toJson<String>(farmId),
       'pastureName': serializer.toJson<String>(pastureName),
       'area': serializer.toJson<double>(area),
-      'grassType': serializer.toJson<String>(grassType),
-      'vigor': serializer.toJson<String>(vigor),
-      'port': serializer.toJson<String>(port),
+      'grassType': serializer.toJson<String>(grassType) != null ? int.parse(serializer.toJson<String>(grassType)) : 0,
+      'vigor': serializer.toJson<String>(vigor) != null ? int.parse(serializer.toJson<String>(vigor)) : 0,
+      'port': serializer.toJson<String>(port) != null ? int.parse(serializer.toJson<String>(port)) : 0,
       'descriptionText': serializer.toJson<String>(descriptionText),
     };
   }
@@ -538,9 +538,9 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
       'userId': serializer.toJson<String>(userId),
       'farmId': serializer.toJson<String>(farmId),
       'idPasture': serializer.toJson<String>(idPasture),
-      'tagPast': serializer.toJson<String>(tagPast),
+      'tagPast': serializer.toJson<int>(int.parse(tagPast))  ,
       'note': serializer.toJson<double>(note),
-      'evaluationDate': serializer.toJson<DateTime>(evaluationDate),
+      'evaluationDate':serializer.toJson<String>(evaluationDate.toIso8601String()),
     };
   }
 

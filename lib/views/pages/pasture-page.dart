@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pasture_manager/bloc/account.bloc.dart';
 import 'package:pasture_manager/db/DatabasePM.dart';
 import 'package:pasture_manager/model/pasture.model.dart';
 import 'package:pasture_manager/settings.dart';
@@ -56,7 +55,7 @@ class _PasturePageState extends State<PasturePage> {
                   decoration: InputDecoration(
                     labelText: 'Tamanho da área do pasto',
                   ),
-                  validator: (value) {
+                  validator: (value){
                     if (value.isEmpty)
                       return 'O campo área do pasto deve ser preenchido!';
                   },

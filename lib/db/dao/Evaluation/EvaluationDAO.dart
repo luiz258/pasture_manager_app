@@ -21,8 +21,8 @@ class EvaluationDAO extends DatabaseAccessor<DatabasePM> with _$EvaluationDAOMix
     return into(evaluations).insert(entity);
   }
 
-  Stream<List<Evaluation>> listEvaluation(){
-    return (select(evaluations)).watch();
+  Future<List<Evaluation>> listEvaluation(){
+    return (select(evaluations)).get();
   }
 
    Future removeEvaluation( _id) {

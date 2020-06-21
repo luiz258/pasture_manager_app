@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/pages/login-page.dart';
+import 'package:pasture_manager/views/pages/sync-page.dart';
 import 'package:pasture_manager/views/widgets/evaluation/evaluation-list.widget.dart';
 import 'package:pasture_manager/views/widgets/pasture/pasture-list.widget.dart';
-import 'package:provider/provider.dart';
-
-import 'bloc/account.bloc.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -71,6 +69,22 @@ class _HomePageState extends State<HomePage> {
 
             //    ),
             // ],
+
+            actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.replay),
+            tooltip: 'Sincroniazr dados',
+            onPressed: () {
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SyncPage()),
+              );
+               
+            //  scaffoldKey.currentState.showSnackBar(snackBar);
+            },
+          ),
+          
+        ],
             bottom: TabBar(
                 labelColor: Theme.of(context).primaryColor,
                 indicatorColor: Theme.of(context).primaryColor,
@@ -88,8 +102,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                 
                     tabs: [
-                      Container(child: Tab(text: 'Pasto')),
-                      Tab(text: 'Avaliações', ),
+                      Container(
+                        child: 
+                        Tab(text: 'Pasto'),),
+                        Tab(text: 'Avaliações', )
+                      
+                      
                     ],
               
                 ),
@@ -117,6 +135,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               PastureList(),
               EvaluationList(),
+             
 
             ],
             ),

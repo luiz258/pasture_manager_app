@@ -1,4 +1,5 @@
 
+import 'package:intl/intl.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:pasture_manager/db/dao/Evaluation/EvaluationDAO.dart';
 import 'package:uuid/uuid.dart';
@@ -52,6 +53,5 @@ class DatabasePM extends _$DatabasePM{
 
 
   @override
-  // ////TODO: implement schemaVersion
   int get schemaVersion => 2;
 }
