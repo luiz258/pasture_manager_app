@@ -7,12 +7,12 @@ part 'EvaluationDAO.g.dart';
 class EvaluationWithNamePasture{
   final Pasture pasture1;
   final Evaluation evaluation1;
-
-  EvaluationWithNamePasture( this.pasture1, this.evaluation1);
+  final Farm farm1;
+  EvaluationWithNamePasture( this.pasture1, this.evaluation1, this.farm1);
 }
 
 
-@UseDao(tables: [Pastures, Evaluations])
+@UseDao(tables: [Farms, Pastures, Evaluations])
 class EvaluationDAO extends DatabaseAccessor<DatabasePM> with _$EvaluationDAOMixin{
   EvaluationDAO(DatabasePM db): super(db);
 
@@ -21,8 +21,8 @@ class EvaluationDAO extends DatabaseAccessor<DatabasePM> with _$EvaluationDAOMix
     return into(evaluations).insert(entity);
   }
 
-  Future<List<Evaluation>> listEvaluation(){
-    return (select(evaluations)).get();
+  Future<List<Evaluation>> listEvaluation(String idFarm){
+    return (select(evaluations)..where((t) => t.farmId.equals(idFarm))).get();
   }
 
    Future removeEvaluation( _id) {
@@ -30,19 +30,21 @@ class EvaluationDAO extends DatabaseAccessor<DatabasePM> with _$EvaluationDAOMix
     }
 
 
-  Stream<List<EvaluationWithNamePasture>> listAllEvaluationPasture() {
-     
-        final query = select(evaluations).join([
-          leftOuterJoin(pastures, pastures.id.equalsExp(evaluations.idPasture)
-          
-          )
+  Stream<List<EvaluationWithNamePasture>> listAllEvaluationPasture(String iDfarm) {
+        final query = (select(evaluations)..where((tbl) => tbl.farmId.equals(iDfarm))).join([
+         leftOuterJoin(farms,farms.id.equals(iDfarm)),
+        //  innerJoin(farms,farms.id.equals(iDfarm)),
+       
+         leftOuterJoin(pastures, pastures.id.equalsExp(evaluations.pastureId)),
+        
         ]);
-
+      
         return query.watch().map((rows) {
         return rows.map((row) {
           return EvaluationWithNamePasture(
             row.readTable(pastures),
             row.readTable(evaluations),
+            row.readTable(farms),
           );
         }).toList();
 });

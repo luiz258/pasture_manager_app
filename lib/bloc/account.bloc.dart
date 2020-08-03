@@ -4,31 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pasture_manager/model/authenticate-user.model.dart';
 import 'package:pasture_manager/model/create-user.model.dart';
+import 'package:pasture_manager/model/recover-user.model.dart';
 import 'package:pasture_manager/model/user.model.dart';
 import 'package:pasture_manager/repositories/account.repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../settings.dart';
 
 class AccountBloc extends ChangeNotifier {
-  var user = Settings.user;
+  var user = new  UserModel();
   bool bisy;
+
   AccountBloc() {
     //print(Settings.user);
     bisy = false;
-    //  user = null;
+    user = null;
     loadUser();
   }
 
-  showLoad() {
-    print('aqui');
-    bisy = true;
-    notifyListeners();
-  }
 
-  offLoad() {
-    print('aqui2');
-    bisy = false;
-    notifyListeners();
+  Future<RecoverPasswordModel> recoverAccount(RecoverPasswordModel model) async {
+    var _repUser = new AccountRepository();
+   try {
+      var res = await _repUser.recoveryEmailUser(model);
+      print(res);
+       return res;
+   } catch (e) {
+     print(e);
+     return null;
+   }
   }
 
   Future<UserModel> authenticate(AuthenticateModel model) async {
@@ -50,7 +53,7 @@ class AccountBloc extends ChangeNotifier {
     }
   }
 
-  lougout() async {
+   lougout() async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', null);
     user = null;
@@ -64,19 +67,25 @@ class AccountBloc extends ChangeNotifier {
     if (userData != null) {
       var res = UserModel.fromJson(jsonDecode(userData));
       Settings.user = res;
+      print(res.id);
+    print(Settings.user.id);
       user = res;
-      return res;
     }
+    
   }
 
   Future<CreateUserModel> register(CreateUserModel model) async {
     var _repUser = new AccountRepository();
     try {
       var res = await _repUser.registerUser(model);
+      print(res);
       return res;
     } catch (e) {
       print(e);
       return null;
     }
   }
+
+  
+   
 }

@@ -3,7 +3,7 @@ class FarmModel {
   String id;
   String farmName;
   String document;
-  int area;
+  double area;
   String farmAddress;
   String city;
   String uf;
@@ -23,7 +23,7 @@ class FarmModel {
     id = json['id'];
     farmName = json['farmName'];
     document = json['document'];
-    area = json['area'];
+    area = double.parse(json['area']);
     farmAddress = json['farmAddress'];
     city = json['city'];
     uf = json['uf'];

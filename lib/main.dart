@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:pasture_manager/bloc/account.bloc.dart';
+import 'package:pasture_manager/bloc/farm.bloc.dart';
 import 'package:pasture_manager/bloc/pasture.bloc.dart';
 import 'package:pasture_manager/bloc/sync.bloc.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/pages/login-page.dart';
+import 'package:pasture_manager/views/widgets/farm/farm-list.widget.dart';
 
 import 'package:provider/provider.dart';
 
-import 'home.dart';
 
 
 
@@ -28,12 +29,7 @@ class MyHttpOverrides extends HttpOverrides {
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
   runApp( 
-    LoadingProvider(
-      themeData: LoadingThemeData(
-          // tapDismiss: false,
-       
-          ),
-      child: MyApp(), ),
+     MyApp(),
   );
 }
 
@@ -48,7 +44,8 @@ class MyApp extends StatelessWidget {
           value: AccountBloc(),
         ),
         ChangeNotifierProvider<SyncBloc>.value(value: SyncBloc(),),
-        ChangeNotifierProvider<PastureBloc>.value(value: PastureBloc(),)
+        ChangeNotifierProvider<PastureBloc>.value(value: PastureBloc(),),
+        ChangeNotifierProvider<FarmBloc>.value(value: FarmBloc(),)
       ],
       child: Main(),
     );
@@ -69,7 +66,12 @@ class Main extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: appTheme(),
-      home:  Account(),
+      home: LoadingProvider(
+      themeData: LoadingThemeData(
+          // tapDismiss: false,
+       
+          ),
+      child: Account(), ),
     
     );
   }
@@ -82,7 +84,7 @@ class Account extends StatelessWidget {
       var bloc = Provider.of<AccountBloc>(context, listen: false);
     return Scaffold(
       body: bloc.loadUser() == null 
-          ? HomePage()
+          ? FarmList()
           : LoginPage(),
     );
   }

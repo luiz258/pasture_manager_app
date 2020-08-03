@@ -7,6 +7,7 @@ part of 'EvaluationDAO.dart';
 // **************************************************************************
 
 mixin _$EvaluationDAOMixin on DatabaseAccessor<DatabasePM> {
+  $FarmsTable get farms => attachedDatabase.farms;
   $PasturesTable get pastures => attachedDatabase.pastures;
   $EvaluationsTable get evaluations => attachedDatabase.evaluations;
 }

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:pasture_manager/bloc/account.bloc.dart';
 import 'package:pasture_manager/model/authenticate-user.model.dart';
+import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
+import 'package:pasture_manager/views/pages/recoverPassword-page.dart';
 import 'package:pasture_manager/views/pages/signup-page.dart';
 import 'package:provider/provider.dart';
-
 
 import '../../home.dart';
 
@@ -15,22 +16,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-    var  _authForm = AuthenticateModel();
-    final _scoffoldKey = GlobalKey<ScaffoldState>();
-    final _formKey = GlobalKey<FormState>();
-      var email = '';
-      var password = '';
-   var bloc = new AccountBloc();
-   bool bisy= false;
-@override
+  // var  _authForm = AuthenticateModel();
+  final _scoffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+  var email = '';
+  var password = '';
+
+  bool bisy = false;
+  @override
   void setState(fn) {
     super.setState(fn);
   }
- 
+
   @override
   Widget build(BuildContext context) {
-       var bloc = Provider.of<AccountBloc>(context, listen: false);
+    //var bloc = Provider.of<AccountBloc>(context, listen: false);
     return Scaffold(
       key: _scoffoldKey,
       body: Form(
@@ -39,13 +39,11 @@ class _LoginPageState extends State<LoginPage> {
           height: double.infinity,
           color: backgroundColor,
           child: SingleChildScrollView(
-            
-           
             child: Column(
-              
               children: <Widget>[
-                SizedBox(height: 140,),  
-
+                SizedBox(
+                  height: 140,
+                ),
                 Container(
                   //padding: EdgeInsets.all(20),
                   child: Column(
@@ -53,38 +51,34 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                        Image.asset('assets/leaf.png'),
-                         Text(
-                          'UCP', 
-                          style: TextStyle( 
-                            fontSize: 54 ,
-                            fontStyle: FontStyle.italic ,
-                            fontWeight: FontWeight.bold ,
-                            color: Theme.of(context).primaryColor)
-                            ),
+                          Image.asset('assets/leaf.png'),
+                          Text('UCP',
+                              style: TextStyle(
+                                  fontSize: 54,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor)),
                         ],
                       ),
                       Text('Uso correto da da pastagem',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic ,
-                      )
-                      ),
-
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                          )),
                     ],
                   ),
-                ),      
-                SizedBox(height: 70,),
-               
-                
+                ),
+                SizedBox(
+                  height: 70,
+                ),
                 Container(
-                    decoration: new BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
                     //border:  Border.all(width: 1.0, color:primaryColor),
                     boxShadow: [
                       BoxShadow(
@@ -94,100 +88,121 @@ class _LoginPageState extends State<LoginPage> {
                         offset: Offset(0, 3), // changes position of shadow
                       ),
                     ],
-                    ),
-                    
+                  ),
                   margin: EdgeInsets.only(left: 45, right: 45),
-                  child:Container(
+                  child: Container(
                     child: Container(
                       margin: EdgeInsets.all(20),
                       height: 340,
-                      
                       width: 500,
-                      
                       child: Column(
                         children: <Widget>[
-                      Text('Fazer login',
-                        style: TextStyle(fontSize: 22),
-                      ),  
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Email'
-                        ),
-                        validator: (value){
-                          if(value.isEmpty) return 'O campo Email deve ser preenchido!';
-                        },
-                        onSaved: (value){
-                          email = value;
-                        },
-                      ),
-                      SizedBox(height: 5,),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Senha'
-                        ),
-                        validator: (value){
-                          if(value.isEmpty) return 'O campo Senha deve ser preenchido!';
-                         
-                        },
-                        onSaved: (value){
-                          password = value;
-                        },
-                      ),
-                      SizedBox(height: 45,),
-                      Container(
-                        width: 300,
-                        height: 35,
-                        child: FlatButton(
-                          color:  Theme.of(context).primaryColor,
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          child:   Text('Entrar',
-                          style: TextStyle(
-                            color: backgroundColor,
-                            fontSize: 18       
+                          Text(
+                            'Fazer login',
+                            style: TextStyle(fontSize: 22),
                           ),
-                          )  ,
-                          onPressed: () {
-                            showLoadingDialog();
-                            if(_formKey.currentState.validate()){
-                              _formKey.currentState.save();
-                              authenticate(context);
-                            
-                            }
-                        
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 15,),
-                      Container(
-                        width: 300,
-                        height: 45,
-                        child: FlatButton(
-                          color:  backgroundColor,
-                          
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          child:  Text('Faça sua conta agora!',
-                            style: TextStyle(
-                              //color: backgroundColor,
-                              fontSize: 18       
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Email'),
+                            // ignore: missing_return
+                            validator: (value) {
+                              if (value.isEmpty)
+                                return 'O campo Email deve ser preenchido!';
+                            },
+                            onSaved: (value) {
+                              email = value.trim();
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(labelText: 'Senha'),
+                            // ignore: missing_return
+                            validator: (value) {
+                              if (value.isEmpty)
+                                return 'O campo Senha deve ser preenchido!';
+                            },
+                            onSaved: (value) {
+                              password = value;
+                            },
+                          ),
+                          SizedBox(
+                            height: 45,
+                          ),
+                          Container(
+                            width: 300,
+                            height: 35,
+                            child: FlatButton(
+                              color: Theme.of(context).primaryColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0)),
+                              child: Text(
+                                'Entrar',
+                                style: TextStyle(
+                                    color: backgroundColor, fontSize: 18),
+                              ),
+                              onPressed: () {
+                                showLoadingDialog();
+                                if (_formKey.currentState.validate()) {
+                                  _formKey.currentState.save();
+                                  authenticate(context);
+                                }
+                              },
                             ),
-                          ), 
-                          onPressed: () {
-                            
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Signup()),
-                            );
-                          },
-                        ),
-                      ),
-                      ],
-                      
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: 300,
+                            height: 45,
+                            child: FlatButton(
+                              color: backgroundColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0)),
+                              child: Text(
+                                'Faça sua conta agora!',
+                                style: TextStyle(
+                                    //color: backgroundColor,
+                                    fontSize: 18),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Signup()),
+                                );
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 300,
+                            height: 40,
+                            child: FlatButton(
+                              color: backgroundColor,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0)),
+                              child: Text(
+                                'Esqueceu a senha?',
+                                style: TextStyle(
+                                    //color: backgroundColor,
+                                    fontSize: 12),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RecoverPassword()),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 )
-                
               ],
             ),
           ),
@@ -196,37 +211,29 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  authenticate(BuildContext context) async{
-    
- 
-     var user = await bloc.authenticate(
-       AuthenticateModel(
+  authenticate(BuildContext context) async {
+    var bloc = Provider.of<AccountBloc>(context, listen: false);
+
+    var user = await bloc.authenticate(
+      AuthenticateModel(
         email: email,
         passwordHash: password,
       ),
     );
+
+    if (user != null) {
+      //print(user)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     
-    if (user != null) { 
-   
-    //print(user)
-     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-      
-    );
-     hideLoadingDialog();
+      hideLoadingDialog();
       return;
     }
 
- hideLoadingDialog();
+    hideLoadingDialog();
     final snackBar = SnackBar(content: Text('Usuário ou senha invalidos'));
     _scoffoldKey.currentState.showSnackBar(snackBar);
-    
-
-   
   }
-
-
- 
-
 }

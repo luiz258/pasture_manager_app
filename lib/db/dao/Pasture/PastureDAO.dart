@@ -13,12 +13,16 @@ class PastureDAO extends DatabaseAccessor<DatabasePM> with _$PastureDAOMixin{
     return into(pastures).insert(entity);
   }
 
-  Stream<List<Pasture>> listPasture(){
-    return (select(pastures)).watch();
+  Stream<List<Pasture>> listPasture(idfarm){
+    return (select(pastures)..where((tbl) => tbl.farmId.equals(idfarm))).watch();
   }
 
-  Future<List<Pasture>> syncListPasture(){
-  return (select(pastures)).get();
+  Stream<List<Pasture>> listPasturePerFarmId(idfarm){
+    return (select(pastures)..where((t) => t.farmId.equals(idfarm))).watch();
+  }
+
+  Future<List<Pasture>> syncListPasture(idfarm){
+  return (select(pastures)..where((t) => t.farmId.equals(idfarm))).get();
 
   }
   Future updatePastureSyncData(Pasture model){

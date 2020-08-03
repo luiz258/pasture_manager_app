@@ -7,14 +7,460 @@ part of 'DatabasePM.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+class Farm extends DataClass implements Insertable<Farm> {
+  final String id;
+  final String userId;
+  final String farmName;
+  final String document;
+  final double area;
+  final String farmAddress;
+  final String city;
+  final String uf;
+  Farm(
+      {@required this.id,
+      @required this.userId,
+      @required this.farmName,
+      @required this.document,
+      @required this.area,
+      @required this.farmAddress,
+      @required this.city,
+      @required this.uf});
+  factory Farm.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final doubleType = db.typeSystem.forDartType<double>();
+    return Farm(
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      userId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
+      farmName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}farm_name']),
+      document: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}document']),
+      area: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}area']),
+      farmAddress: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}farm_address']),
+      city: stringType.mapFromDatabaseResponse(data['${effectivePrefix}city']),
+      uf: stringType.mapFromDatabaseResponse(data['${effectivePrefix}uf']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<String>(id);
+    }
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<String>(userId);
+    }
+    if (!nullToAbsent || farmName != null) {
+      map['farm_name'] = Variable<String>(farmName);
+    }
+    if (!nullToAbsent || document != null) {
+      map['document'] = Variable<String>(document);
+    }
+    if (!nullToAbsent || area != null) {
+      map['area'] = Variable<double>(area);
+    }
+    if (!nullToAbsent || farmAddress != null) {
+      map['farm_address'] = Variable<String>(farmAddress);
+    }
+    if (!nullToAbsent || city != null) {
+      map['city'] = Variable<String>(city);
+    }
+    if (!nullToAbsent || uf != null) {
+      map['uf'] = Variable<String>(uf);
+    }
+    return map;
+  }
+
+  factory Farm.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Farm(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      farmName: serializer.fromJson<String>(json['farmName']),
+      document: serializer.fromJson<String>(json['document']),
+      area: serializer.fromJson<double>(json['area']),
+      farmAddress: serializer.fromJson<String>(json['farmAddress']),
+      city: serializer.fromJson<String>(json['city']),
+      uf: serializer.fromJson<String>(json['uf']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'farmName': serializer.toJson<String>(farmName),
+      'document': serializer.toJson<String>(document),
+      'area': serializer.toJson<double>(area),
+      'farmAddress': serializer.toJson<String>(farmAddress),
+      'city': serializer.toJson<String>(city),
+      'uf': serializer.toJson<String>(uf),
+    };
+  }
+
+  Farm copyWith(
+          {String id,
+          String userId,
+          String farmName,
+          String document,
+          double area,
+          String farmAddress,
+          String city,
+          String uf}) =>
+      Farm(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        farmName: farmName ?? this.farmName,
+        document: document ?? this.document,
+        area: area ?? this.area,
+        farmAddress: farmAddress ?? this.farmAddress,
+        city: city ?? this.city,
+        uf: uf ?? this.uf,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Farm(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('farmName: $farmName, ')
+          ..write('document: $document, ')
+          ..write('area: $area, ')
+          ..write('farmAddress: $farmAddress, ')
+          ..write('city: $city, ')
+          ..write('uf: $uf')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          userId.hashCode,
+          $mrjc(
+              farmName.hashCode,
+              $mrjc(
+                  document.hashCode,
+                  $mrjc(
+                      area.hashCode,
+                      $mrjc(farmAddress.hashCode,
+                          $mrjc(city.hashCode, uf.hashCode))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Farm &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.farmName == this.farmName &&
+          other.document == this.document &&
+          other.area == this.area &&
+          other.farmAddress == this.farmAddress &&
+          other.city == this.city &&
+          other.uf == this.uf);
+}
+
+class FarmsCompanion extends UpdateCompanion<Farm> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> farmName;
+  final Value<String> document;
+  final Value<double> area;
+  final Value<String> farmAddress;
+  final Value<String> city;
+  final Value<String> uf;
+  const FarmsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.farmName = const Value.absent(),
+    this.document = const Value.absent(),
+    this.area = const Value.absent(),
+    this.farmAddress = const Value.absent(),
+    this.city = const Value.absent(),
+    this.uf = const Value.absent(),
+  });
+  FarmsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String userId,
+    @required String farmName,
+    @required String document,
+    @required double area,
+    @required String farmAddress,
+    @required String city,
+    @required String uf,
+  })  : userId = Value(userId),
+        farmName = Value(farmName),
+        document = Value(document),
+        area = Value(area),
+        farmAddress = Value(farmAddress),
+        city = Value(city),
+        uf = Value(uf);
+  static Insertable<Farm> custom({
+    Expression<String> id,
+    Expression<String> userId,
+    Expression<String> farmName,
+    Expression<String> document,
+    Expression<double> area,
+    Expression<String> farmAddress,
+    Expression<String> city,
+    Expression<String> uf,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (farmName != null) 'farm_name': farmName,
+      if (document != null) 'document': document,
+      if (area != null) 'area': area,
+      if (farmAddress != null) 'farm_address': farmAddress,
+      if (city != null) 'city': city,
+      if (uf != null) 'uf': uf,
+    });
+  }
+
+  FarmsCompanion copyWith(
+      {Value<String> id,
+      Value<String> userId,
+      Value<String> farmName,
+      Value<String> document,
+      Value<double> area,
+      Value<String> farmAddress,
+      Value<String> city,
+      Value<String> uf}) {
+    return FarmsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      farmName: farmName ?? this.farmName,
+      document: document ?? this.document,
+      area: area ?? this.area,
+      farmAddress: farmAddress ?? this.farmAddress,
+      city: city ?? this.city,
+      uf: uf ?? this.uf,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (farmName.present) {
+      map['farm_name'] = Variable<String>(farmName.value);
+    }
+    if (document.present) {
+      map['document'] = Variable<String>(document.value);
+    }
+    if (area.present) {
+      map['area'] = Variable<double>(area.value);
+    }
+    if (farmAddress.present) {
+      map['farm_address'] = Variable<String>(farmAddress.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (uf.present) {
+      map['uf'] = Variable<String>(uf.value);
+    }
+    return map;
+  }
+}
+
+class $FarmsTable extends Farms with TableInfo<$FarmsTable, Farm> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $FarmsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    )..clientDefault = () => _uuid.v4();
+  }
+
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  GeneratedTextColumn _userId;
+  @override
+  GeneratedTextColumn get userId => _userId ??= _constructUserId();
+  GeneratedTextColumn _constructUserId() {
+    return GeneratedTextColumn(
+      'user_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _farmNameMeta = const VerificationMeta('farmName');
+  GeneratedTextColumn _farmName;
+  @override
+  GeneratedTextColumn get farmName => _farmName ??= _constructFarmName();
+  GeneratedTextColumn _constructFarmName() {
+    return GeneratedTextColumn(
+      'farm_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _documentMeta = const VerificationMeta('document');
+  GeneratedTextColumn _document;
+  @override
+  GeneratedTextColumn get document => _document ??= _constructDocument();
+  GeneratedTextColumn _constructDocument() {
+    return GeneratedTextColumn(
+      'document',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _areaMeta = const VerificationMeta('area');
+  GeneratedRealColumn _area;
+  @override
+  GeneratedRealColumn get area => _area ??= _constructArea();
+  GeneratedRealColumn _constructArea() {
+    return GeneratedRealColumn(
+      'area',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _farmAddressMeta =
+      const VerificationMeta('farmAddress');
+  GeneratedTextColumn _farmAddress;
+  @override
+  GeneratedTextColumn get farmAddress =>
+      _farmAddress ??= _constructFarmAddress();
+  GeneratedTextColumn _constructFarmAddress() {
+    return GeneratedTextColumn(
+      'farm_address',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _cityMeta = const VerificationMeta('city');
+  GeneratedTextColumn _city;
+  @override
+  GeneratedTextColumn get city => _city ??= _constructCity();
+  GeneratedTextColumn _constructCity() {
+    return GeneratedTextColumn(
+      'city',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _ufMeta = const VerificationMeta('uf');
+  GeneratedTextColumn _uf;
+  @override
+  GeneratedTextColumn get uf => _uf ??= _constructUf();
+  GeneratedTextColumn _constructUf() {
+    return GeneratedTextColumn(
+      'uf',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userId, farmName, document, area, farmAddress, city, uf];
+  @override
+  $FarmsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'farms';
+  @override
+  final String actualTableName = 'farms';
+  @override
+  VerificationContext validateIntegrity(Insertable<Farm> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id'], _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('farm_name')) {
+      context.handle(_farmNameMeta,
+          farmName.isAcceptableOrUnknown(data['farm_name'], _farmNameMeta));
+    } else if (isInserting) {
+      context.missing(_farmNameMeta);
+    }
+    if (data.containsKey('document')) {
+      context.handle(_documentMeta,
+          document.isAcceptableOrUnknown(data['document'], _documentMeta));
+    } else if (isInserting) {
+      context.missing(_documentMeta);
+    }
+    if (data.containsKey('area')) {
+      context.handle(
+          _areaMeta, area.isAcceptableOrUnknown(data['area'], _areaMeta));
+    } else if (isInserting) {
+      context.missing(_areaMeta);
+    }
+    if (data.containsKey('farm_address')) {
+      context.handle(
+          _farmAddressMeta,
+          farmAddress.isAcceptableOrUnknown(
+              data['farm_address'], _farmAddressMeta));
+    } else if (isInserting) {
+      context.missing(_farmAddressMeta);
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+          _cityMeta, city.isAcceptableOrUnknown(data['city'], _cityMeta));
+    } else if (isInserting) {
+      context.missing(_cityMeta);
+    }
+    if (data.containsKey('uf')) {
+      context.handle(_ufMeta, uf.isAcceptableOrUnknown(data['uf'], _ufMeta));
+    } else if (isInserting) {
+      context.missing(_ufMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Farm map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Farm.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $FarmsTable createAlias(String alias) {
+    return $FarmsTable(_db, alias);
+  }
+}
+
 class Pasture extends DataClass implements Insertable<Pasture> {
   final String id;
   final String farmId;
   final String pastureName;
   final double area;
-  final String grassType;
-  final String vigor;
-  final String port;
+  final int grassType;
+  final int vigor;
+  final int port;
   final String descriptionText;
   Pasture(
       {@required this.id,
@@ -30,6 +476,7 @@ class Pasture extends DataClass implements Insertable<Pasture> {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final doubleType = db.typeSystem.forDartType<double>();
+    final intType = db.typeSystem.forDartType<int>();
     return Pasture(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       farmId:
@@ -37,11 +484,10 @@ class Pasture extends DataClass implements Insertable<Pasture> {
       pastureName: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pasture_name']),
       area: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}area']),
-      grassType: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}grass_type']),
-      vigor:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}vigor']),
-      port: stringType.mapFromDatabaseResponse(data['${effectivePrefix}port']),
+      grassType:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}grass_type']),
+      vigor: intType.mapFromDatabaseResponse(data['${effectivePrefix}vigor']),
+      port: intType.mapFromDatabaseResponse(data['${effectivePrefix}port']),
       descriptionText: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description_text']),
     );
@@ -62,13 +508,13 @@ class Pasture extends DataClass implements Insertable<Pasture> {
       map['area'] = Variable<double>(area);
     }
     if (!nullToAbsent || grassType != null) {
-      map['grass_type'] = Variable<String>(grassType);
+      map['grass_type'] = Variable<int>(grassType);
     }
     if (!nullToAbsent || vigor != null) {
-      map['vigor'] = Variable<String>(vigor);
+      map['vigor'] = Variable<int>(vigor);
     }
     if (!nullToAbsent || port != null) {
-      map['port'] = Variable<String>(port);
+      map['port'] = Variable<int>(port);
     }
     if (!nullToAbsent || descriptionText != null) {
       map['description_text'] = Variable<String>(descriptionText);
@@ -84,9 +530,9 @@ class Pasture extends DataClass implements Insertable<Pasture> {
       farmId: serializer.fromJson<String>(json['farmId']),
       pastureName: serializer.fromJson<String>(json['pastureName']),
       area: serializer.fromJson<double>(json['area']),
-      grassType: serializer.fromJson<String>(json['grassType']),
-      vigor: serializer.fromJson<String>(json['vigor']),
-      port: serializer.fromJson<String>(json['port']),
+      grassType: serializer.fromJson<int>(json['grassType']),
+      vigor: serializer.fromJson<int>(json['vigor']),
+      port: serializer.fromJson<int>(json['port']),
       descriptionText: serializer.fromJson<String>(json['descriptionText']),
     );
   }
@@ -98,9 +544,9 @@ class Pasture extends DataClass implements Insertable<Pasture> {
       'farmId': serializer.toJson<String>(farmId),
       'pastureName': serializer.toJson<String>(pastureName),
       'area': serializer.toJson<double>(area),
-      'grassType': serializer.toJson<String>(grassType) != null ? int.parse(serializer.toJson<String>(grassType)) : 0,
-      'vigor': serializer.toJson<String>(vigor) != null ? int.parse(serializer.toJson<String>(vigor)) : 0,
-      'port': serializer.toJson<String>(port) != null ? int.parse(serializer.toJson<String>(port)) : 0,
+      'grassType': serializer.toJson<int>(grassType),
+      'vigor': serializer.toJson<int>(vigor),
+      'port': serializer.toJson<int>(port),
       'descriptionText': serializer.toJson<String>(descriptionText),
     };
   }
@@ -110,9 +556,9 @@ class Pasture extends DataClass implements Insertable<Pasture> {
           String farmId,
           String pastureName,
           double area,
-          String grassType,
-          String vigor,
-          String port,
+          int grassType,
+          int vigor,
+          int port,
           String descriptionText}) =>
       Pasture(
         id: id ?? this.id,
@@ -171,9 +617,9 @@ class PasturesCompanion extends UpdateCompanion<Pasture> {
   final Value<String> farmId;
   final Value<String> pastureName;
   final Value<double> area;
-  final Value<String> grassType;
-  final Value<String> vigor;
-  final Value<String> port;
+  final Value<int> grassType;
+  final Value<int> vigor;
+  final Value<int> port;
   final Value<String> descriptionText;
   const PasturesCompanion({
     this.id = const Value.absent(),
@@ -187,14 +633,15 @@ class PasturesCompanion extends UpdateCompanion<Pasture> {
   });
   PasturesCompanion.insert({
     this.id = const Value.absent(),
-    this.farmId = const Value.absent(),
+    @required String farmId,
     @required String pastureName,
     @required double area,
-    @required String grassType,
-    @required String vigor,
-    @required String port,
+    @required int grassType,
+    @required int vigor,
+    @required int port,
     @required String descriptionText,
-  })  : pastureName = Value(pastureName),
+  })  : farmId = Value(farmId),
+        pastureName = Value(pastureName),
         area = Value(area),
         grassType = Value(grassType),
         vigor = Value(vigor),
@@ -205,9 +652,9 @@ class PasturesCompanion extends UpdateCompanion<Pasture> {
     Expression<String> farmId,
     Expression<String> pastureName,
     Expression<double> area,
-    Expression<String> grassType,
-    Expression<String> vigor,
-    Expression<String> port,
+    Expression<int> grassType,
+    Expression<int> vigor,
+    Expression<int> port,
     Expression<String> descriptionText,
   }) {
     return RawValuesInsertable({
@@ -227,9 +674,9 @@ class PasturesCompanion extends UpdateCompanion<Pasture> {
       Value<String> farmId,
       Value<String> pastureName,
       Value<double> area,
-      Value<String> grassType,
-      Value<String> vigor,
-      Value<String> port,
+      Value<int> grassType,
+      Value<int> vigor,
+      Value<int> port,
       Value<String> descriptionText}) {
     return PasturesCompanion(
       id: id ?? this.id,
@@ -259,13 +706,13 @@ class PasturesCompanion extends UpdateCompanion<Pasture> {
       map['area'] = Variable<double>(area.value);
     }
     if (grassType.present) {
-      map['grass_type'] = Variable<String>(grassType.value);
+      map['grass_type'] = Variable<int>(grassType.value);
     }
     if (vigor.present) {
-      map['vigor'] = Variable<String>(vigor.value);
+      map['vigor'] = Variable<int>(vigor.value);
     }
     if (port.present) {
-      map['port'] = Variable<String>(port.value);
+      map['port'] = Variable<int>(port.value);
     }
     if (descriptionText.present) {
       map['description_text'] = Variable<String>(descriptionText.value);
@@ -299,7 +746,7 @@ class $PasturesTable extends Pastures with TableInfo<$PasturesTable, Pasture> {
       'farm_id',
       $tableName,
       false,
-    )..clientDefault = () => _uuid.v4();
+    );
   }
 
   final VerificationMeta _pastureNameMeta =
@@ -326,11 +773,11 @@ class $PasturesTable extends Pastures with TableInfo<$PasturesTable, Pasture> {
   }
 
   final VerificationMeta _grassTypeMeta = const VerificationMeta('grassType');
-  GeneratedTextColumn _grassType;
+  GeneratedIntColumn _grassType;
   @override
-  GeneratedTextColumn get grassType => _grassType ??= _constructGrassType();
-  GeneratedTextColumn _constructGrassType() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get grassType => _grassType ??= _constructGrassType();
+  GeneratedIntColumn _constructGrassType() {
+    return GeneratedIntColumn(
       'grass_type',
       $tableName,
       false,
@@ -338,11 +785,11 @@ class $PasturesTable extends Pastures with TableInfo<$PasturesTable, Pasture> {
   }
 
   final VerificationMeta _vigorMeta = const VerificationMeta('vigor');
-  GeneratedTextColumn _vigor;
+  GeneratedIntColumn _vigor;
   @override
-  GeneratedTextColumn get vigor => _vigor ??= _constructVigor();
-  GeneratedTextColumn _constructVigor() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get vigor => _vigor ??= _constructVigor();
+  GeneratedIntColumn _constructVigor() {
+    return GeneratedIntColumn(
       'vigor',
       $tableName,
       false,
@@ -350,11 +797,11 @@ class $PasturesTable extends Pastures with TableInfo<$PasturesTable, Pasture> {
   }
 
   final VerificationMeta _portMeta = const VerificationMeta('port');
-  GeneratedTextColumn _port;
+  GeneratedIntColumn _port;
   @override
-  GeneratedTextColumn get port => _port ??= _constructPort();
-  GeneratedTextColumn _constructPort() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get port => _port ??= _constructPort();
+  GeneratedIntColumn _constructPort() {
+    return GeneratedIntColumn(
       'port',
       $tableName,
       false,
@@ -395,6 +842,8 @@ class $PasturesTable extends Pastures with TableInfo<$PasturesTable, Pasture> {
     if (data.containsKey('farm_id')) {
       context.handle(_farmIdMeta,
           farmId.isAcceptableOrUnknown(data['farm_id'], _farmIdMeta));
+    } else if (isInserting) {
+      context.missing(_farmIdMeta);
     }
     if (data.containsKey('pasture_name')) {
       context.handle(
@@ -457,15 +906,15 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
   final String id;
   final String userId;
   final String farmId;
-  final String idPasture;
-  final String tagPast;
+  final String pastureId;
+  final int tagPast;
   final double note;
   final DateTime evaluationDate;
   Evaluation(
       {@required this.id,
       @required this.userId,
       @required this.farmId,
-      @required this.idPasture,
+      @required this.pastureId,
       @required this.tagPast,
       @required this.note,
       @required this.evaluationDate});
@@ -473,6 +922,7 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
     final doubleType = db.typeSystem.forDartType<double>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Evaluation(
@@ -481,10 +931,10 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
       farmId:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}farm_id']),
-      idPasture: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}id_pasture']),
-      tagPast: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}tag_past']),
+      pastureId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pasture_id']),
+      tagPast:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}tag_past']),
       note: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}note']),
       evaluationDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}evaluation_date']),
@@ -502,11 +952,11 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
     if (!nullToAbsent || farmId != null) {
       map['farm_id'] = Variable<String>(farmId);
     }
-    if (!nullToAbsent || idPasture != null) {
-      map['id_pasture'] = Variable<String>(idPasture);
+    if (!nullToAbsent || pastureId != null) {
+      map['pasture_id'] = Variable<String>(pastureId);
     }
     if (!nullToAbsent || tagPast != null) {
-      map['tag_past'] = Variable<String>(tagPast);
+      map['tag_past'] = Variable<int>(tagPast);
     }
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<double>(note);
@@ -524,8 +974,8 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
       id: serializer.fromJson<String>(json['id']),
       userId: serializer.fromJson<String>(json['userId']),
       farmId: serializer.fromJson<String>(json['farmId']),
-      idPasture: serializer.fromJson<String>(json['idPasture']),
-      tagPast: serializer.fromJson<String>(json['tagPast']),
+      pastureId: serializer.fromJson<String>(json['pastureId']),
+      tagPast: serializer.fromJson<int>(json['tagPast']),
       note: serializer.fromJson<double>(json['note']),
       evaluationDate: serializer.fromJson<DateTime>(json['evaluationDate']),
     );
@@ -537,10 +987,10 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
       'id': serializer.toJson<String>(id),
       'userId': serializer.toJson<String>(userId),
       'farmId': serializer.toJson<String>(farmId),
-      'idPasture': serializer.toJson<String>(idPasture),
-      'tagPast': serializer.toJson<int>(int.parse(tagPast))  ,
+      'pastureId': serializer.toJson<String>(pastureId),
+      'tagPast': serializer.toJson<int>(tagPast),
       'note': serializer.toJson<double>(note),
-      'evaluationDate':serializer.toJson<String>(evaluationDate.toIso8601String()),
+      'evaluationDate': serializer.toJson<String>(evaluationDate.toIso8601String()),
     };
   }
 
@@ -548,15 +998,15 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
           {String id,
           String userId,
           String farmId,
-          String idPasture,
-          String tagPast,
+          String pastureId,
+          int tagPast,
           double note,
           DateTime evaluationDate}) =>
       Evaluation(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         farmId: farmId ?? this.farmId,
-        idPasture: idPasture ?? this.idPasture,
+        pastureId: pastureId ?? this.pastureId,
         tagPast: tagPast ?? this.tagPast,
         note: note ?? this.note,
         evaluationDate: evaluationDate ?? this.evaluationDate,
@@ -567,7 +1017,7 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('farmId: $farmId, ')
-          ..write('idPasture: $idPasture, ')
+          ..write('pastureId: $pastureId, ')
           ..write('tagPast: $tagPast, ')
           ..write('note: $note, ')
           ..write('evaluationDate: $evaluationDate')
@@ -583,7 +1033,7 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
           $mrjc(
               farmId.hashCode,
               $mrjc(
-                  idPasture.hashCode,
+                  pastureId.hashCode,
                   $mrjc(tagPast.hashCode,
                       $mrjc(note.hashCode, evaluationDate.hashCode)))))));
   @override
@@ -593,7 +1043,7 @@ class Evaluation extends DataClass implements Insertable<Evaluation> {
           other.id == this.id &&
           other.userId == this.userId &&
           other.farmId == this.farmId &&
-          other.idPasture == this.idPasture &&
+          other.pastureId == this.pastureId &&
           other.tagPast == this.tagPast &&
           other.note == this.note &&
           other.evaluationDate == this.evaluationDate);
@@ -603,15 +1053,15 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
   final Value<String> id;
   final Value<String> userId;
   final Value<String> farmId;
-  final Value<String> idPasture;
-  final Value<String> tagPast;
+  final Value<String> pastureId;
+  final Value<int> tagPast;
   final Value<double> note;
   final Value<DateTime> evaluationDate;
   const EvaluationsCompanion({
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.farmId = const Value.absent(),
-    this.idPasture = const Value.absent(),
+    this.pastureId = const Value.absent(),
     this.tagPast = const Value.absent(),
     this.note = const Value.absent(),
     this.evaluationDate = const Value.absent(),
@@ -620,13 +1070,13 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
     this.id = const Value.absent(),
     @required String userId,
     @required String farmId,
-    @required String idPasture,
-    @required String tagPast,
+    @required String pastureId,
+    @required int tagPast,
     @required double note,
     @required DateTime evaluationDate,
   })  : userId = Value(userId),
         farmId = Value(farmId),
-        idPasture = Value(idPasture),
+        pastureId = Value(pastureId),
         tagPast = Value(tagPast),
         note = Value(note),
         evaluationDate = Value(evaluationDate);
@@ -634,8 +1084,8 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
     Expression<String> id,
     Expression<String> userId,
     Expression<String> farmId,
-    Expression<String> idPasture,
-    Expression<String> tagPast,
+    Expression<String> pastureId,
+    Expression<int> tagPast,
     Expression<double> note,
     Expression<DateTime> evaluationDate,
   }) {
@@ -643,7 +1093,7 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (farmId != null) 'farm_id': farmId,
-      if (idPasture != null) 'id_pasture': idPasture,
+      if (pastureId != null) 'pasture_id': pastureId,
       if (tagPast != null) 'tag_past': tagPast,
       if (note != null) 'note': note,
       if (evaluationDate != null) 'evaluation_date': evaluationDate,
@@ -654,15 +1104,15 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
       {Value<String> id,
       Value<String> userId,
       Value<String> farmId,
-      Value<String> idPasture,
-      Value<String> tagPast,
+      Value<String> pastureId,
+      Value<int> tagPast,
       Value<double> note,
       Value<DateTime> evaluationDate}) {
     return EvaluationsCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
       farmId: farmId ?? this.farmId,
-      idPasture: idPasture ?? this.idPasture,
+      pastureId: pastureId ?? this.pastureId,
       tagPast: tagPast ?? this.tagPast,
       note: note ?? this.note,
       evaluationDate: evaluationDate ?? this.evaluationDate,
@@ -681,11 +1131,11 @@ class EvaluationsCompanion extends UpdateCompanion<Evaluation> {
     if (farmId.present) {
       map['farm_id'] = Variable<String>(farmId.value);
     }
-    if (idPasture.present) {
-      map['id_pasture'] = Variable<String>(idPasture.value);
+    if (pastureId.present) {
+      map['pasture_id'] = Variable<String>(pastureId.value);
     }
     if (tagPast.present) {
-      map['tag_past'] = Variable<String>(tagPast.value);
+      map['tag_past'] = Variable<int>(tagPast.value);
     }
     if (note.present) {
       map['note'] = Variable<double>(note.value);
@@ -738,24 +1188,24 @@ class $EvaluationsTable extends Evaluations
     );
   }
 
-  final VerificationMeta _idPastureMeta = const VerificationMeta('idPasture');
-  GeneratedTextColumn _idPasture;
+  final VerificationMeta _pastureIdMeta = const VerificationMeta('pastureId');
+  GeneratedTextColumn _pastureId;
   @override
-  GeneratedTextColumn get idPasture => _idPasture ??= _constructIdPasture();
-  GeneratedTextColumn _constructIdPasture() {
+  GeneratedTextColumn get pastureId => _pastureId ??= _constructPastureId();
+  GeneratedTextColumn _constructPastureId() {
     return GeneratedTextColumn(
-      'id_pasture',
+      'pasture_id',
       $tableName,
       false,
     );
   }
 
   final VerificationMeta _tagPastMeta = const VerificationMeta('tagPast');
-  GeneratedTextColumn _tagPast;
+  GeneratedIntColumn _tagPast;
   @override
-  GeneratedTextColumn get tagPast => _tagPast ??= _constructTagPast();
-  GeneratedTextColumn _constructTagPast() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get tagPast => _tagPast ??= _constructTagPast();
+  GeneratedIntColumn _constructTagPast() {
+    return GeneratedIntColumn(
       'tag_past',
       $tableName,
       false,
@@ -790,7 +1240,7 @@ class $EvaluationsTable extends Evaluations
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, userId, farmId, idPasture, tagPast, note, evaluationDate];
+      [id, userId, farmId, pastureId, tagPast, note, evaluationDate];
   @override
   $EvaluationsTable get asDslTable => this;
   @override
@@ -817,11 +1267,11 @@ class $EvaluationsTable extends Evaluations
     } else if (isInserting) {
       context.missing(_farmIdMeta);
     }
-    if (data.containsKey('id_pasture')) {
-      context.handle(_idPastureMeta,
-          idPasture.isAcceptableOrUnknown(data['id_pasture'], _idPastureMeta));
+    if (data.containsKey('pasture_id')) {
+      context.handle(_pastureIdMeta,
+          pastureId.isAcceptableOrUnknown(data['pasture_id'], _pastureIdMeta));
     } else if (isInserting) {
-      context.missing(_idPastureMeta);
+      context.missing(_pastureIdMeta);
     }
     if (data.containsKey('tag_past')) {
       context.handle(_tagPastMeta,
@@ -862,6 +1312,8 @@ class $EvaluationsTable extends Evaluations
 
 abstract class _$DatabasePM extends GeneratedDatabase {
   _$DatabasePM(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  $FarmsTable _farms;
+  $FarmsTable get farms => _farms ??= $FarmsTable(this);
   $PasturesTable _pastures;
   $PasturesTable get pastures => _pastures ??= $PasturesTable(this);
   $EvaluationsTable _evaluations;
@@ -869,5 +1321,6 @@ abstract class _$DatabasePM extends GeneratedDatabase {
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [pastures, evaluations];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [farms, pastures, evaluations];
 }

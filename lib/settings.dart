@@ -2,7 +2,8 @@
 
 class Settings{
    static String apiUrl ='https://ucpapi.azurewebsites.net/';
-   static UserModel user;
+   static UserModel user; 
+   static String farmID; 
    
  }
 

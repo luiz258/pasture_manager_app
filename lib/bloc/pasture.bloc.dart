@@ -6,9 +6,9 @@ class PastureBloc extends ChangeNotifier {
   
 
 
-  Future<List<Pasture>> sincronozarPasto() async {
+  Future<List<Pasture>> sincronozarPasto(idFarm) async {
     var _repPasture = new PastureRepository();
-    List<Pasture> a = await DatabasePM.instance.pastureDAO.syncListPasture();
+    List<Pasture> a = await DatabasePM.instance.pastureDAO.syncListPasture(idFarm);
       a.forEach((element) async {
         await _repPasture.createPasture(element);
       });

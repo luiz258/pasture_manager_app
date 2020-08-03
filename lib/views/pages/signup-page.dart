@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:pasture_manager/bloc/account.bloc.dart';
 import 'package:pasture_manager/model/create-user.model.dart';
-import 'package:pasture_manager/model/user.model.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/pages/login-page.dart';
-
-import '../../home.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -101,6 +98,7 @@ class _SignupState extends State<Signup> {
                             onSaved: (value){
                               _userForm.email = value;
                             },
+                            // ignore: missing_return
                             validator: (value){
                               if(value.isEmpty) return 'O campo Email deve ser preenchido!';
                             },
@@ -114,6 +112,7 @@ class _SignupState extends State<Signup> {
                             onSaved: (value){
                               _userForm.password = value;
                             },
+                            // ignore: missing_return
                             validator: (value){
                               if(value.isEmpty) return 'O campo Senha deve ser preenchido!';
                             },
@@ -126,6 +125,7 @@ class _SignupState extends State<Signup> {
                             onSaved: (value){
                               _userForm.fullName = value;
                             },
+                            // ignore: missing_return
                             validator: (value){
                               if(value.isEmpty) return 'O campo Nome deve ser preenchido!';
                             },
@@ -138,15 +138,17 @@ class _SignupState extends State<Signup> {
                             onSaved: (value){
                               _userForm.telephone = value;
                             },
+                            // ignore: missing_return
                             validator: (value){
                               if(value.isEmpty) return 'O campo Telefone deve ser preenchido!';
                             },
                           ),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Seu cargo'),
-                            // validator: (value){
-                            //   if(value.isEmpty) return 'O campo Cargo deve ser preenchido!';
-                            // },
+                            // ignore: missing_return
+                            validator: (value){
+                              if(value.isEmpty) return 'O campo Cargo deve ser preenchido!';
+                            },
                             onSaved: (value){
                               _userForm.office = value;
                             },
@@ -178,21 +180,7 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
 
-                          // Container(
-                          //   width: 300,
-                          //   height: 45,
-                          //   child: RaisedButton(
-                          //     color:  backgroundColor,
-                          //     shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(5.0)),
-                          //     child: Text('Faça sua conta agora!',
-                          //       style: TextStyle(
-                          //         //color: backgroundColor,
-                          //         fontSize: 18
-                          //       ),
-                          //     ),
-                          //     onPressed: () {},
-                          //   ),
-                          // ),
+                        
                         ],
                       ),
                     ),

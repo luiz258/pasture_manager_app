@@ -10,6 +10,10 @@ import 'package:uuid/uuid.dart';
 
 
 class EvaluationPage extends StatefulWidget {
+  final Farm farm;
+
+  EvaluationPage({@required this.farm});
+
   @override
   _EvaluationPageState createState() => _EvaluationPageState(
         
@@ -24,7 +28,8 @@ class _EvaluationPageState extends State<EvaluationPage> {
 
   DateTime date = DateTime.now();
 
-  var controller =new MaskedTextController(mask: '00.00');
+  var maskValidation =new MaskedTextController(mask: '00.00');
+  var maskValidationRational =new MaskedTextController(mask: '0.00');
  
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -44,6 +49,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
     }
   }
 @override
+// ignore: must_call_super
 void initState()=> _evaluationForm.evaluationDate = date;
 
   @override
@@ -87,7 +93,7 @@ void initState()=> _evaluationForm.evaluationDate = date;
                    validator: (value) => value == null ? 'Selecione a ação atual do pasto capim' : null,
                      onChanged: (val) {
                       setState(() {
-                        _evaluationForm.tagPast= val.toString() ;
+                        _evaluationForm.tagPast= val;
                       });
                     },
                 
@@ -96,7 +102,7 @@ void initState()=> _evaluationForm.evaluationDate = date;
                     ),
                    
                      StreamBuilder<List<Pasture>>(
-                        stream: DatabasePM.instance.pastureDAO.listPasture(),
+                        stream: DatabasePM.instance.pastureDAO.listPasture(widget.farm.id),
                         builder: (context, snapshot) {
                         
                           if(!snapshot.hasData) return Container();
@@ -106,7 +112,7 @@ void initState()=> _evaluationForm.evaluationDate = date;
                             value: _evaluationForm.idPasture,
                             items: list.map(
                               (c)=> DropdownMenuItem(
-                                child: Text(c.id),
+                                child: Text(c.pastureName),
                                 value: c.id,
                                 )).toList(),
                             validator: (value) => value == null ? 'Selecione o Pasto para avaliar.' : null,
@@ -126,11 +132,15 @@ void initState()=> _evaluationForm.evaluationDate = date;
                 
                  TextFormField(
                     keyboardType: TextInputType.number,
-                   controller: controller,
+                   controller: _evaluationForm.tagPast == '1' ?  maskValidationRational : maskValidation,
                     decoration: InputDecoration(
                       labelText: 'Nota'
                     ),
-                    validator: (value) => value == null ? 'O campo nota deve Ser preenchido' : null,
+                    validator: (value){
+                      if(value.isEmpty){ return'O campo nota está vazio ';}
+                      if(_evaluationForm.tagPast == '1' && double.parse(value)>6){ return'A nota pode ser no máximo 6 ';}
+                      if(_evaluationForm.tagPast == '2' && double.parse(value)>24){ return'A nota pode ser no máximo 24 ';}
+                    },
                     onSaved: (value){
                       setState(() {
                         _evaluationForm.note = double.parse(value);
@@ -184,11 +194,11 @@ void initState()=> _evaluationForm.evaluationDate = date;
 
                          var eva = new Evaluation(
                               id: uuid.v4().toString(),
-                              idPasture: _evaluationForm.idPasture,
-                              tagPast: _evaluationForm.tagPast,
+                              pastureId: _evaluationForm.idPasture,
+                              tagPast: int.parse(_evaluationForm.tagPast),
                               note: _evaluationForm.note,
                               evaluationDate:_evaluationForm.evaluationDate,
-                              farmId: Settings.user.farmId,
+                              farmId: widget.farm.id,
                               userId: Settings.user.id
 
                             );

@@ -55,10 +55,11 @@ final EvaluationWithNamePasture model;
     
     return Card(
       color:backgroundColor,
+      
       child: ListTile(
         title:Text('${model.pasture1.pastureName}'),
-        subtitle: Text('Data: ${_dataFormat.format(model.evaluation1.evaluationDate)} / ${int.parse(model.evaluation1.tagPast) == 1 ? descanso : pastejo } '),
-
+        subtitle: Text('Data: ${_dataFormat.format(model.evaluation1.evaluationDate)} '),
+// ${model.evaluation1.tagPast == 1 ? descanso : pastejo }
         leading: Text('nota: ${model.evaluation1.note}',),
         
          trailing:   

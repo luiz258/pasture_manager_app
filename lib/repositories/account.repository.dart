@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pasture_manager/model/authenticate-user.model.dart';
 import 'package:pasture_manager/model/create-user.model.dart';
+import 'package:pasture_manager/model/recover-user.model.dart';
 import 'package:pasture_manager/model/user.model.dart';
 import 'package:pasture_manager/settings.dart';
 
@@ -31,11 +32,11 @@ class AccountRepository {
     
   }
 
-  Future<UserModel> recoveryEmailUser(UserModel model) async {
+  Future<RecoverPasswordModel> recoveryEmailUser(RecoverPasswordModel model) async {
     try {
-      var url = "${Settings.apiUrl}v1/user/v1/edit";
-      Response response = await Dio().post(url, data: model);
-      return UserModel.fromJson(response.data);
+      var url = "${Settings.apiUrl}v1/user/v1/recoveryEmail";
+      Response response = await Dio().post(url, data: model.toJson());
+      return RecoverPasswordModel.fromJson(response.data);
     } catch (e) {
       print(e);
        return null;

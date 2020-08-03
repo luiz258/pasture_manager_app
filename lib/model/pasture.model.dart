@@ -3,9 +3,9 @@ class PastureModel {
   String farmId;
   String pastureName;
   double area;
-  String grassType;
-  String port;
-  String vigor;
+  int grassType;
+  int port;
+  int vigor;
   String descriptionText;
 
   PastureModel(

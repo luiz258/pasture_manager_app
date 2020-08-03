@@ -1,32 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:pasture_manager/db/DatabasePM.dart';
 import 'package:pasture_manager/model/pasture.model.dart';
-import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
 import 'package:uuid/uuid.dart';
 
 class PasturePage extends StatefulWidget {
+  final Farm farm;
+
+  PasturePage({@required this.farm});
   @override
   _PasturePageState createState() => _PasturePageState();
 }
 
 class _PasturePageState extends State<PasturePage> {
-  ///final _formkey = GlobalKey<FormState>();
+  
   GlobalKey<FormState> _formkey = new GlobalKey();
- ////var load = AccountBloc().loadUser()
-  var _pastureForm = new PastureModel();
 
+  var _pastureForm = new PastureModel();
+  String grassType;
+  String vigor;
+  String port;
   var uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
+    // ignore: missing_return
+    var x = (value) {
+      if (value.isEmpty) return 'O campo Nome do pasto deve ser preenchido!';
+    };
+    var validator2 = x;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: backgroundColor,
         iconTheme: IconThemeData(color: primaryColor),
         title: Text(
-          'Fazer Avaliação',
+          'Cadastrar Pasto',
           style: TextStyle(color: primaryColor, fontSize: 26),
         ),
       ),
@@ -40,10 +50,7 @@ class _PasturePageState extends State<PasturePage> {
               children: <Widget>[
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Nome do pasto'),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'O campo Nome do pasto deve ser preenchido!';
-                  },
+                  validator: validator2,
                   onSaved: (val) {
                     setState(() {
                       _pastureForm.pastureName = val;
@@ -55,7 +62,8 @@ class _PasturePageState extends State<PasturePage> {
                   decoration: InputDecoration(
                     labelText: 'Tamanho da área do pasto',
                   ),
-                  validator: (value){
+                  // ignore: missing_return
+                  validator: (value) {
                     if (value.isEmpty)
                       return 'O campo área do pasto deve ser preenchido!';
                   },
@@ -70,23 +78,67 @@ class _PasturePageState extends State<PasturePage> {
                   value: _pastureForm.grassType,
                   items: [
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Brachiaria'),
                       value: '1',
                     ),
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Xaraés'),
                       value: '2',
                     ),
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Piatã'),
                       value: '3',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Mavuno'),
+                      value: '4',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Convert'),
+                      value: '5',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Marandu'),
+                      value: '6',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Decumbens'),
+                      value: '7',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Massai'),
+                      value: '8',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Tamani'),
+                      value: '9',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Mombaça'),
+                      value: '10',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Tanzânia'),
+                      value: '11',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Zuri'),
+                      value: '12',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Paredão'),
+                      value: '13',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('Miage'),
+                      value: '14',
                     ),
                   ],
                   validator: (value) =>
                       value == null ? 'Selecione o tipo do capim' : null,
                   onChanged: (val) {
                     setState(() {
-                      _pastureForm.grassType =  val;
+                      grassType = val;
                     });
                   },
                 ),
@@ -95,15 +147,15 @@ class _PasturePageState extends State<PasturePage> {
                   value: _pastureForm.vigor,
                   items: [
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Baixo'),
                       value: '1',
                     ),
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Médio'),
                       value: '2',
                     ),
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Alto'),
                       value: '3',
                     ),
                   ],
@@ -111,7 +163,7 @@ class _PasturePageState extends State<PasturePage> {
                       value == null ? 'Selecione o vigor do capim' : null,
                   onChanged: (val) {
                     setState(() {
-                      _pastureForm.vigor = val;
+                      vigor = val;
                     });
                   },
                 ),
@@ -120,32 +172,24 @@ class _PasturePageState extends State<PasturePage> {
                   value: _pastureForm.port,
                   items: [
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Médio'),
                       value: '1',
                     ),
                     DropdownMenuItem<String>(
-                      child: Text('Item 1'),
+                      child: Text('Grande'),
                       value: '2',
-                    ),
-                    DropdownMenuItem<String>(
-                      child: Text('Item 1'),
-                      value: '3',
                     ),
                   ],
                   validator: (value) =>
                       value == null ? 'Selecione o porte do capim' : null,
                   onChanged: (val) {
                     setState(() {
-                      _pastureForm.port = val;
+                      port = val;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Descrição'),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'O campo Descrição deve ser preenchido!';
-                  },
                   onSaved: (String val) {
                     setState(() {
                       _pastureForm.descriptionText = val;
@@ -158,27 +202,22 @@ class _PasturePageState extends State<PasturePage> {
                       child: PMButton(
                     text: 'Cadastrar Pasto',
                     callBack: () {
-                      print('${Settings.user} ------------------');
+                      showLoadingDialog();
                       if (_formkey.currentState.validate()) {
                         _formkey.currentState.save();
 
-                        /// print(_formkey);
-
-                        DatabasePM.instance.pastureDAO.addPasture(
-                         
-                          Pasture(
+                        DatabasePM.instance.pastureDAO.addPasture(Pasture(
                           id: uuid.v4().toString(),
                           pastureName: _pastureForm.pastureName,
                           area: _pastureForm.area,
                           descriptionText: _pastureForm.descriptionText,
-                          farmId: Settings.user.farmId,
-                          grassType: _pastureForm.grassType,
-                          port: _pastureForm.port,
-                          vigor: _pastureForm.vigor
-
+                          farmId: widget.farm.id,
+                          grassType: int.parse(grassType),
+                          port: int.parse(port),
+                          vigor: int.parse(vigor),
                         ));
+                        hideLoadingDialog();
                         Navigator.pop(context);
-                        print(_pastureForm);
                       }
 
                       ///Pasture(id:uuid.v4().toString(), pastureName: '1', area: 220.98, descriptionText: 'teste', grassType: 'folha', port: 'grande', vigor: "dsadsa", syncData: false)

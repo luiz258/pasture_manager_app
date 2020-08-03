@@ -21,7 +21,8 @@ dependencies:
   flutter:
     sdk: flutter
   uuid: 2.0.4
-  
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -31,7 +32,7 @@ dependencies:
   shared_preferences: ^0.5.6+3
   flutter_speed_dial: ^1.2.5
   flutter_masked_text: ^0.8.0
-  moor_flutter: ^3.0.0
+  moor_flutter: ^3.1.0
   load: ^0.1.6
 
 dev_dependencies:
@@ -39,7 +40,12 @@ dev_dependencies:
     sdk: flutter
   moor_generator:
   build_runner:
+  flutter_launcher_icons: ^0.7.5
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/leaf.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -55,6 +61,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/leaf.png
+    - assets/pasture/Grupo_110.png
+    - assets/pasture/Grupo_106.png
+    - assets/pasture/Grupo_107.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
