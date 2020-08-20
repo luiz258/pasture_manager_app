@@ -13,13 +13,15 @@ import '../settings.dart';
 class AccountBloc extends ChangeNotifier {
   var user = new  UserModel();
   bool bisy;
-
+  UserModel userData;
   AccountBloc() {
     //print(Settings.user);
     bisy = false;
     user = null;
     loadUser();
   }
+
+
 
 
   Future<RecoverPasswordModel> recoverAccount(RecoverPasswordModel model) async {
@@ -70,6 +72,7 @@ class AccountBloc extends ChangeNotifier {
       print(res.id);
     print(Settings.user.id);
       user = res;
+        notifyListeners();
     }
     
   }

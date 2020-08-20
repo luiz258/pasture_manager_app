@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:pasture_manager/db/DatabasePM.dart';
+import 'package:pasture_manager/home.dart';
 import 'package:pasture_manager/model/pasture.model.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
+import 'package:pasture_manager/views/widgets/management/management.widget.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../settings.dart';
 
 class PasturePage extends StatefulWidget {
   final Farm farm;
-
+ 
   PasturePage({@required this.farm});
   @override
   _PasturePageState createState() => _PasturePageState();
@@ -17,8 +21,10 @@ class PasturePage extends StatefulWidget {
 class _PasturePageState extends State<PasturePage> {
   
   GlobalKey<FormState> _formkey = new GlobalKey();
-
+ final _scoffoldKey = GlobalKey<ScaffoldState>();
   var _pastureForm = new PastureModel();
+
+
   String grassType;
   String vigor;
   String port;
@@ -216,8 +222,10 @@ class _PasturePageState extends State<PasturePage> {
                           port: int.parse(port),
                           vigor: int.parse(vigor),
                         ));
-                        hideLoadingDialog();
-                        Navigator.pop(context);
+                        //hideLoadingDialog();
+                        //Navigator.pop(context);
+                       _showDialog(context);
+                       
                       }
 
                       ///Pasture(id:uuid.v4().toString(), pastureName: '1', area: 220.98, descriptionText: 'teste', grassType: 'folha', port: 'grande', vigor: "dsadsa", syncData: false)
@@ -232,4 +240,32 @@ class _PasturePageState extends State<PasturePage> {
       ),
     );
   }
+void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Pasto salvo com sucesso!"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK", style: TextStyle(color: Colors.red),),
+              onPressed: () {
+                 Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Management(farm: widget.farm)),
+                );
+              },
+            ),
+                        
+          ],
+        );
+      },
+    );
+  }
+  
 }
+

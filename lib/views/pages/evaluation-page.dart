@@ -6,6 +6,7 @@ import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:pasture_manager/views/widgets/management/management.widget.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -205,7 +206,7 @@ void initState()=> _evaluationForm.evaluationDate = date;
 
 
                           DatabasePM.instance.evaluationDAO.addEvaluation(eva);
-                          Navigator.pop(context);
+                          _showDialog(context);
                         }
 
                   },),
@@ -215,6 +216,32 @@ void initState()=> _evaluationForm.evaluationDate = date;
           ),
         ),
       ),
+    );
+  }
+  void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Avaliação feita com sucesso!"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK",),
+              onPressed: () {
+                 Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Management(farm: widget.farm)),
+                );
+              },
+            ),
+                        
+          ],
+        );
+      },
     );
   }
 }

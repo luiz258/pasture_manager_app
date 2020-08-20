@@ -139,7 +139,7 @@ class _ManagementState extends State<Management> {
                     tabs: [
                       Container(
                         child: 
-                        Tab(text: 'Pasto'),),
+                        Tab(text: 'Pastejo'),),
                         Tab(text: 'Avaliações', )
                       
                       

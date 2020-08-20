@@ -7,6 +7,7 @@ import 'package:pasture_manager/db/DatabasePM.dart';
 import 'package:pasture_manager/model/pasturelist.model.dart';
 import 'package:pasture_manager/repositories/pasture.repository.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
+import 'package:pasture_manager/views/widgets/management/management.widget.dart';
 import 'package:provider/provider.dart';
 
 
@@ -57,7 +58,7 @@ class _SyncPageState extends State<SyncPage> {
                         color: Colors.blue,
                         callBack: () {
                           blocPas.sincronozarPasto(widget.farm.id);
-                            Navigator.pop(context);
+                           _showDialog(context);
                         },
                       ),
                     ),
@@ -76,7 +77,7 @@ class _SyncPageState extends State<SyncPage> {
                   color: Colors.blue,
                   callBack: () {
                     blocEva.syncEvaluation(widget.farm.id);
-                      Navigator.pop(context);
+                     _showDialog(context);
                   },
                 ),
               ),
@@ -109,5 +110,32 @@ class _SyncPageState extends State<SyncPage> {
      this.pastureLength = pastures.length;
      print( this.pastureLength);
 }
+
+ void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Sincronização feita com sucesso!"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                 Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Management(farm: widget.farm)),
+                );
+              },
+            ),
+                        
+          ],
+        );
+      },
+    );
+  }
 
 }

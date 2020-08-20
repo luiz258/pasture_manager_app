@@ -211,12 +211,9 @@ class _SignupState extends State<Signup> {
 if (user != null ) { 
    
     //print(user)
-     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-      
-    );
+     
      hideLoadingDialog();
+     _showDialog(context);
       return;
     }
 
@@ -225,5 +222,34 @@ if (user != null ) {
     _scoffoldKey.currentState.showSnackBar(snackBar);
     
 
+  }
+
+
+   void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Cadastrado feito com sucesso"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                 Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    
+                  );
+              },
+            ),
+                        
+          ],
+        );
+      },
+    );
   }
 }

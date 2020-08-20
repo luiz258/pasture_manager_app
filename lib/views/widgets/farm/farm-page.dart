@@ -8,6 +8,7 @@ import 'package:pasture_manager/model/farm.model.dart';
 import 'package:pasture_manager/settings.dart';
 import 'package:pasture_manager/themes/app.themes.dart';
 import 'package:pasture_manager/views/components/button.widget.dart';
+import 'package:pasture_manager/views/widgets/farm/farm-list.widget.dart';
 
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -199,8 +200,7 @@ class _FarmPageState extends State<FarmPage> {
                     if (value.isEmpty)
                       return 'O campo Area da fazenda deve ser preenchido!';
                   },
-                  initialValue:
-                    widget.farm?.area?.toString(),
+                  initialValue: widget.farm?.area?.toString(),
                   onSaved: (value) {
                     _farmForm.area = double.parse(value);
                   },
@@ -253,22 +253,21 @@ class _FarmPageState extends State<FarmPage> {
                   height: 20,
                 ),
                 PMButton(
-                    text: 'Salvar',
-                    callBack:(){
-                     if (!_formkey.currentState.validate()) {
-                        return;
-                      }
+                  text: 'Salvar',
+                  callBack: () {
+                    if (!_formkey.currentState.validate()) {
+                      return;
+                    }
 
-                      _formkey.currentState.save();
-                     
+                    _formkey.currentState.save();
 
-                      if (widget.farm == null) {
-                         addFarm(context);
-                      } else{
-                        updateFarm(context);
-                        }
-                    }, 
-                    ),
+                    if (widget.farm == null) {
+                      addFarm(context);
+                    } else {
+                      updateFarm(context);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -276,7 +275,6 @@ class _FarmPageState extends State<FarmPage> {
       ),
     );
   }
-
 
   addFarm(BuildContext context) async {
     var bloc = Provider.of<FarmBloc>(context, listen: false);
@@ -292,12 +290,12 @@ class _FarmPageState extends State<FarmPage> {
         farmAddress: _farmForm.farmAddress,
         farmName: _farmForm.farmName,
         uf: _farmForm.uf,
-        userId : Settings.user.id ,
+        userId: Settings.user.id,
       ),
     );
 
     if (farm.id != null) {
-    print('aqui fazer ${farm}');
+      print('aqui fazer ${farm}');
 
       Farm entity = new Farm(
         id: farm.id,
@@ -312,24 +310,16 @@ class _FarmPageState extends State<FarmPage> {
       await DatabasePM.instance.farmDAO.addFArm(entity);
       print('aqui fazer ${farm}');
       hideLoadingDialog();
- 
-
-
-   Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-
-
+      _showDialog(context);
 
       return;
     }
- hideLoadingDialog();
-     final snackBar = SnackBar(content: Text('Erro: ${farm}'));
+    hideLoadingDialog();
+    final snackBar = SnackBar(content: Text('Erro: ${farm}'));
     _scoffoldKey.currentState.showSnackBar(snackBar);
   }
 
-    updateFarm(BuildContext context) async {
+  updateFarm(BuildContext context) async {
     var bloc = Provider.of<FarmBloc>(context, listen: false);
     var blocUser = Provider.of<AccountBloc>(context, listen: false);
     blocUser.loadUser();
@@ -348,7 +338,7 @@ class _FarmPageState extends State<FarmPage> {
     );
 
     if (farm != null) {
-         Farm entity = new Farm(
+      Farm entity = new Farm(
         id: widget.farm.id,
         area: _farmForm.area,
         city: _farmForm.city,
@@ -359,20 +349,42 @@ class _FarmPageState extends State<FarmPage> {
         userId: Settings.user.id,
       );
       await DatabasePM.instance.farmDAO.updateFarm(entity);
-      hideLoadingDialog();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-
-      hideLoadingDialog();
+      _showDialog(context);
       return;
     }
 
     hideLoadingDialog();
-     final snackBar = SnackBar(content: Text('Erro: ${farm.menssagem}'));
+    final snackBar = SnackBar(content: Text('Erro: ${farm.menssagem}'));
     _scoffoldKey.currentState.showSnackBar(snackBar);
     // final snackBar = SnackBar(content: Text('Usuário ou senha invalidos'));
     // _scoffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+
+  void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Fazenda salvo com sucesso!"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+                        
+          ],
+        );
+      },
+    );
   }
 }

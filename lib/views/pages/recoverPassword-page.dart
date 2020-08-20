@@ -170,4 +170,33 @@ class _RecoverPasswordState extends State<RecoverPassword> {
     final snackBar = SnackBar(content: Text('Email invalidos'));
     _scoffoldKey.currentState.showSnackBar(snackBar);
   }
+
+
+  void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Sua nova senha foi eviada, em seu email !"),
+         // content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                 Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    
+                  );
+              },
+            ),
+                        
+          ],
+        );
+      },
+    );
+  }
 }

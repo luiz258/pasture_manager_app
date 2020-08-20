@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 )),
               ),
-              body: FarmList(),
+              body: FarmList(userId: widget.userIdA,),
 
               // TabBarView(
               //   children: [

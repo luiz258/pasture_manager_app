@@ -30,52 +30,54 @@ class _PastureListState extends State<PastureList> {
     //  DatabasePM.instance.pastureDAO.addPasture(Pasture(id:uuid.v4().toString(), pastureName: '1', area: 220.98, descriptionText: 'teste', grassType: 'folha', port: 'grande', vigor: "dsadsa", syncData: false));
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: 16,),
-          Container(child: Center(child: Text('${widget.farm.farmName.toUpperCase()}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400, ),),),),
-          Container(
-            height: 620,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 16,),
+            Container(child: Center(child: Text('${widget.farm.farmName.toUpperCase()}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400, ),),),),
+            Container(
+              height: 620,
      
-            child: FutureBuilder<List<LastReviewByPasto>>(
-              future: _repository.getListLastReviewByPast(widget.farm.id),
-              // ignore: missing_return
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return Container();
+              child: FutureBuilder<List<LastReviewByPasto>>(
+                future: _repository.getListLastReviewByPast(widget.farm.id),
+                // ignore: missing_return
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return Container();
 
-                List<LastReviewByPasto> pasture = snapshot.data;
+                  List<LastReviewByPasto> pasture = snapshot.data;
 
-        switch(snapshot.connectionState){
-          case ConnectionState.none:
-            return Text('Aguardando...' , style: TextStyle(color:  Colors.blueGrey),);
-          case ConnectionState.active:
-           return Center(
-              child: CircularProgressIndicator( backgroundColor: Colors.blueGrey,),
-            );
-          case ConnectionState.waiting:
-            return Center(
-              child: CircularProgressIndicator( backgroundColor: Colors.blueGrey,),
-            );
-          case ConnectionState.done:
-            if (snapshot.hasError)
-              return Center(
-                child: Text("Não foi possível obter o produto", style: TextStyle(color:  Colors.blueGrey,),),
+          switch(snapshot.connectionState){
+            case ConnectionState.none:
+              return Text('Aguardando...' , style: TextStyle(color:  Colors.blueGrey),);
+            case ConnectionState.active:
+             return Center(
+                child: CircularProgressIndicator( backgroundColor: Colors.blueGrey,),
               );
-                return ListView.builder(
-                  itemCount: pasture.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PastureItem(
-                      model: pasture[index],
-                    );
-                  },
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator( backgroundColor: Colors.blueGrey,),
+              );
+            case ConnectionState.done:
+              if (snapshot.hasError)
+                return Center(
+                  child: Text("Não foi possível obter o produto", style: TextStyle(color:  Colors.blueGrey,),),
                 );
-                           
-      }
-              },
-            ),
-            
-          )
-        ],
+                  return ListView.builder(
+                    itemCount: pasture.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PastureItem(
+                        model: pasture[index],
+                      );
+                    },
+                  );
+                             
+        }
+                },
+              ),
+              
+            )
+          ],
+        ),
       ),
       
     );

@@ -46,7 +46,7 @@ class _FarmListState extends State<FarmList> {
             Container(
               height: double.maxFinite,
               child: StreamBuilder<List<Farm>>(
-                stream: DatabasePM.instance.farmDAO.listAll(widget.userId == null? Settings.user.id: widget.userId),
+                stream: DatabasePM.instance.farmDAO.listAll(widget.userId == null? bloc.user.id :Settings.user.id),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
                     return Container(
